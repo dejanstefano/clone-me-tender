@@ -1,0 +1,16 @@
+version: "3.6"
+
+services:
+  run:
+    volumes:
+      - ~/.ssh:/root/.ssh
+      - ./:/var/run
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        - GITLAB_HOST=${GITLAB_HOST:-https://gitlab.com}
+        - GITLAB_TOKEN=${GITLAB_TOKEN:-''}
+        - GROUP_ID=${GROUP_ID:-1}
+    env_file:
+      - ./.env
