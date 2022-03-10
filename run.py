@@ -26,17 +26,19 @@ def main():
             path = os.path.join(root, project['path_with_namespace'])
             ssh_url_to_repo = project['ssh_url_to_repo']
             try:
-                if not os.path.exists(path):
+                if project['mirror'] is True:
+                    print("Skipping mirrored!")
+                elif not os.path.exists(path):
                     command = shlex.split(f"git clone {ssh_url_to_repo} {path}")
                     subprocess.Popen(command)
-                    time.sleep(3)
+                    time.sleep(1)
                 else:
                     logging.info(f"{path} already exists")
                     os.chdir(path)
                     command = shlex.split(f"git pull")
                     subprocess.Popen(command)
                     os.chdir(root)
-                    time.sleep(3)
+                    time.sleep(1)
 
             except Exception as e:
                 logging.error(f"Error on {ssh_url_to_repo}: {e}")
@@ -48,5 +50,5 @@ def main():
 
 if __name__ == '__main__':
     main()
-    time.sleep(60)
+    time.sleep(30)
     print('All done!')
